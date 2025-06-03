@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hawassa Library | Catalog</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome & Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+        <!-- Internal CSS -->
+    <style>
+        @keyframes slideLeft {
+            from { transform: translateX(-50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideRight {
+            from { transform: translateX(50px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Dark Mode */
+        body.dark-mode {
+            background: #121212;
+            color: #f8f9fa;
+        }
+        .dark-mode .navbar, 
+        .dark-mode .card {
+            background: #1e1e1e !important;
+            color: rgb(64, 64, 240);
+        }
+        .dark-mode .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .dark-mode .btn-outline-primary {
+            color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .dark-mode .text-primary {
+            color: #0d6efd !important;
+        }
+
+        /* Card Hover Effects */
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.1) !important;
+        }
+
+        /* Star Ratings */
+        .rating-stars {
+            color: #ffc107;
+            font-size: 0.9rem;
+        }
+
+        /* Footer Styling */
+        footer hr {
+            border-color: #444;
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== Navbar ===== -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light  fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand " href="#">
+                <img src="images/logo1.png" alt="Library Logo" class="rounded-pill" style="height: 50px; width: 50px;">
+                
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav text-primary me-auto" >
+                    <li class="nav-item"><a class="nav-link text-primary" href="home.html"><i class="fas fa-home me-1"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link active text-primary" href="catalog.html"><i class="fas fa-book me-1"></i> Catalog</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="E-book.html"><i class="fas fa-tablet me-1"></i> E-Books</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="community.html"><i class="fas fa-users me-1"></i> Community</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="Alert.html"><i class="fas fa-bell me-1"></i> Alerts</a></li>
+                </ul>
+               <div class="d-flex">
+                  <button id="darkModeToggle" class="btn btn-sm btn-outline-secondary me-2">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                   
+                    <a href="Login.html" class="btn btn-outline-primary me-2"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
+                    <a href="#" class="btn btn-primary position-relative">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== Catalog Dashboard ===== -->
+    <section class="catalog-dashboard py-5 mt-5">
+        <div class="container">
+            <!-- Search Bar with Filters -->
+            <div class="row mb-5">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" placeholder="Search books...">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select form-select-lg">
+                        <option selected>Filter by...</option>
+                        <option value="title">Book Title</option>
+                        <option value="author">Author</option>
+                        <option value="genre">Genre</option>
+                        <option value="isbn">ISBN</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Genre-Based Catalog Sections -->
+            <h2 class="mb-4"><i class="fas fa-list-ul me-2"></i> Browse by Genre</h2>
+            
+            <!-- Computer Scince Section -->
+           <div class="card mb-3 shadow-sm mx-1 px-2 py-2 mb-5">
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h3 class="m-0 py-2">
+                        <i class=" bi bi-laptop px-2 text-primary"></i>Computer Science
+                    </h3>
+                    <a href="#" class="btn btn-sm btn-outline-primary my-2 ">See all <i class="fas fa-arrow-right my-2"></i></a>
+
+              </div>
+              <div class="row g-4">
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 border-2 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                            <h5 class="card-title">Social Eginnering</h5>
+                            <p class="text-muted small">Gabriel Song</p>
+                            
+                            <!-- Star Rating -->
+                            <div class="mb-3">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    <span class="small ms-1">4.5 (128)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                    <i class="fas fa-arrow-right ms-1"></i></a>
+                                <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                            </div>
+                            <button class="btn btn-sm btn-primary w-100 mt-3">
+                                <i class="fas fa-book-open me-1"></i> Borrow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <!-- Recommended books 2 -->
+                            
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 border-2 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                            <h5 class="card-title">Data Communication</h5>
+                            <p class="text-muted small">Sara Dhora</p>
+                            
+                            <!-- Star Rating -->
+                            <div class="mb-3">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    <span class="small ms-1">4.5 (128)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                    <i class="fas fa-arrow-right ms-1"></i></a>
+                                <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                            </div>
+                            <button class="btn btn-sm btn-primary w-100 mt-3">
+                                <i class="fas fa-book-open me-1"></i> Borrow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommended Book 3-->
+
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 border-2 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                            <h5 class="card-title">Cyber Security</h5>
+                            <p class="text-muted small">Daniel Wolt</p>
+                            
+                            <!-- Star Rating -->
+                            <div class="mb-3">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    <span class="small ms-1">4.5 (128)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                    <i class="fas fa-arrow-right ms-1"></i></a>
+                                <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                            </div>
+                            <button class="btn btn-sm btn-primary w-100 mt-3">
+                                <i class="fas fa-book-open me-1"></i> Borrow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                  <!-- Recommended book 4 -->
+
+                  <div class="col-md-3 mb-4">
+                    <div class="card h-100 border-2 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                            <h5 class="card-title">The Art of Hacking</h5>
+                            <p class="text-muted small">Pr.Marthin Plaut</p>
+                            
+                            <!-- Star Rating -->
+                            <div class="mb-3">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    <span class="small ms-1">4.5 (128)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                    <i class="fas fa-arrow-right ms-1"></i></a>
+                                <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                            </div>
+                            <button class="btn btn-sm btn-primary w-100 mt-3">
+                                <i class="fas fa-book-open me-1"></i> Borrow
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+              </div>
+
+
+           </div>
+            
+        <!--Technology catalog-->
+        <div class="card mb-3 shadow-sm mx-1 px-2 py-2 mb-5 border-1">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h3 class="m-0 py-2">
+                      <i class=" bi bi-robot px-2 text-primary"></i>Technology
+                  </h3>
+                  <a href="#" class="btn btn-sm btn-outline-primary my-2 ">See all <i class="fas fa-arrow-right my-2"></i></a>
+
+            </div>
+            <div class="row g-4">
+              <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">Tesla</h5>
+                          <p class="text-muted small">Elun Musk</p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+              
+              <!-- Recommended books 2 -->
+                          
+              <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">The Microsoft</h5>
+                          <p class="text-muted small">Bill Gates</p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Recommended Book 3-->
+
+              <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">Blockchain</h5>
+                          <p class="text-muted small">Albert Daniel</p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+                <!-- Recommended book 4 -->
+
+                <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">Web 3</h5>
+                          <p class="text-muted small">Satoshi Nakomata</p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+
+            </div>
+
+
+         </div>
+
+         <!--history Section-->
+
+         <div class="card mb-3 shadow-sm mx-1 px-2 py-2 mb-5 border-1">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h3 class="m-0 py-2">
+                      <i class=" bi bi-people px-2 text-primary"></i>History
+                  </h3>
+                  <a href="#" class="btn btn-sm btn-outline-primary my-2 ">See all <i class="fas fa-arrow-right my-2"></i></a>
+
+            </div>
+            <div class="row g-4">
+              <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">WWII</h5>
+                          <p class="text-muted small">Crown Frances</p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+              
+              <!-- Recommended books 2 -->
+                          
+              <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">Ethiopian History</h5>
+                          <p class="text-muted small">Pr.Mesfin W/Maryam </p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Recommended Book 3-->
+
+              <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">The Horn of Africa</h5>
+                          <p class="text-muted small">Daniel Wolt</p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+                <!-- Recommended book 4 -->
+
+                <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">The Vikings</h5>
+                          <p class="text-muted small">Pr.Abebe Bulcha</p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+
+            </div>
+
+
+         </div>
+
+         <!--Fiction Section-->
+
+         <div class="card mb-3 shadow-sm mx-1 px-2 py-2 mb-5 border-1">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                  <h3 class="m-0 py-2">
+                      <i class=" bi bi-magic px-2 text-primary"></i>Fiction
+                  </h3>
+                  <a href="#" class="btn btn-sm btn-outline-primary my-2 ">See all <i class="fas fa-arrow-right my-2"></i></a>
+
+            </div>
+            <div class="row g-4">
+              <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">Merbebt</h5>
+                          <p class="text-muted small">Alemayew Gelagay</p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+              
+              <!-- Recommended books 2 -->
+                          
+              <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">Harry Poter</h5>
+                          <p class="text-muted small">J.K Rolling</p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+              <!-- Recommended Book 3-->
+
+              <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">Tikusat</h5>
+                          <p class="text-muted small">Sibhat G. Egziabher</p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+                <!-- Recommended book 4 -->
+
+                <div class="col-md-3 mb-4">
+                  <div class="card h-100 border-2 shadow-sm">
+                      <div class="card-body text-center p-4">
+                          <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                          <h5 class="card-title">Aromay</h5>
+                          <p class="text-muted small">Bealu Girma</p>
+                          
+                          <!-- Star Rating -->
+                          <div class="mb-3">
+                              <div class="rating-stars">
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star text-warning"></i>
+                                  <i class="fas fa-star-half-alt text-warning"></i>
+                                  <span class="small ms-1">4.5 (128)</span>
+                              </div>
+                          </div>
+                          
+                          <div class="d-flex justify-content-between">
+                              <a href="#" class="text-primary my-2" style="text-decoration: none; ">See Details 
+                                  <i class="fas fa-arrow-right ms-1"></i></a>
+                              <button class="btn btn-sm btn-outline-primary"><i class="fas fa-cart-plus"></i></button>
+                          </div>
+                          <button class="btn btn-sm btn-primary w-100 mt-3">
+                              <i class="fas fa-book-open me-1"></i> Borrow
+                          </button>
+                      </div>
+                  </div>
+              </div>
+
+
+            </div>
+
+
+         </div>
+        
+            <!-- Quick Stats -->
+            <div class="row mt-5">
+                <div class="col-md-4 text-center">
+                    <i class="bi bi-book text-primary" style="font-size: 2.5rem;"></i>
+                    <h3 class="mt-2">10,000+</h3>
+                    <p class="text-muted">Books Available</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="bi bi-people text-primary" style="font-size: 2.5rem;"></i>
+                    <h3 class="mt-2">5,000+</h3>
+                    <p class="text-muted">Active Members</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="bi bi-clock-history text-primary" style="font-size: 2.5rem;"></i>
+                    <h3 class="mt-2">24/7</h3>
+                    <p class="text-muted">Online Access</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== Footer===== -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Hawassa public Library</h5>
+                    <p>Your Gateway to Knowledge.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Home</a></li>
+                        <li><a href="#" class="text-white">Catalog</a></li>
+                        <li><a href="#" class="text-white">Events</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Us</h5>
+                    <p><i class="fas fa-envelope me-2"></i> contact@hawassapubliclib.com</p>
+                    <p><i class="fas fa-phone me-2"></i> +123 456 7890</p>
+                </div>
+            </div>
+            <hr>
+            <p class="text-center mb-0">&copy; 2025 Hawassa public Library. All rights reserved.</p>
+        </div>
+    </footer>
+    
+
+    <!-- Bootstrap JS + Custom JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Internal JavaScript -->
+    <script>
+        // Dark Mode Toggle
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('#darkModeToggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        });
+
+        // Check for saved preference on page load
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('#darkModeToggle i').classList.replace('fa-moon', 'fa-sun');
+        }
+    </script>
+
+
+<!-- catalog.html -->
+<script type="module">
+    import { apiService } from '../static/js/api.js';  // Fixed path
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchBtn = document.querySelector('.search-btn');
+      const searchInput = document.querySelector('.search-input');
+      const resultsContainer = document.querySelector('.results-container');
+      const loadingIndicator = document.querySelector('.loading');
+      
+      if (!searchBtn || !searchInput) {
+        console.error('Required elements not found');
+        return;
+      }
+  
+      searchBtn.addEventListener('click', async () => {
+        try {
+          loadingIndicator.style.display = 'block';
+          resultsContainer.innerHTML = '';
+          
+          const query = searchInput.value.trim();
+          if (!query) {
+            throw new Error('Please enter a search term');
+          }
+  
+          const results = await apiService.searchBooks(query);
+          renderResults(results);
+        } catch (error) {
+          showError(error.message);
+        } finally {
+          loadingIndicator.style.display = 'none';
+        }
+      });
+  
+      function renderResults(books) {
+        resultsContainer.innerHTML = books.map(book => `
+          <div class="book-card">
+            <h3>${escapeHtml(book.title)}</h3>
+            <p>Author: ${escapeHtml(book.author)}</p>
+            <button class="borrow-btn" data-id="${book.id}">
+              Borrow
+            </button>
+          </div>
+        `).join('');
+  
+        // Add event listeners to new buttons
+        document.querySelectorAll('.borrow-btn').forEach(btn => {
+          btn.addEventListener('click', handleBorrow);
+        });
+      }
+  
+      function handleBorrow(event) {
+        const bookId = event.target.dataset.id;
+        // ... borrowing logic
+      }
+  
+      function escapeHtml(unsafe) {
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+  
+      function showError(message) {
+        const errorEl = document.createElement('div');
+        errorEl.className = 'error-message';
+        errorEl.textContent = message;
+        resultsContainer.prepend(errorEl);
+        setTimeout(() => errorEl.remove(), 5000);
+      }
+    });
+  </script>
+
+</body>
+</html>

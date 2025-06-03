@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hawassa Library | E-Books</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome & Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Custom CSS -->
+    <style>
+    
+        /* Dark Mode */
+        body.dark-mode {
+            background: #121212;
+            color: #f8f9fa;
+        }
+        .dark-mode .navbar, 
+        .dark-mode .card {
+            background: #1e1e1e !important;
+            color: rgb(64, 64, 240);
+        }
+        .dark-mode .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .dark-mode .btn-outline-primary {
+            color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .dark-mode .text-primary {
+            color: #0d6efd !important;
+        }
+
+        /* Card Hover Effects */
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.1) !important;
+        }
+
+        /* Star Ratings */
+        .rating-stars {
+            color: #ffc107;
+            font-size: 0.9rem;
+        }
+
+        /* Footer Styling */
+        footer hr {
+            border-color: #444;
+
+    /* Enhanced E-Book Styles */
+.ebook-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(0, 123, 255, 0.1);
+    color: #007bff;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+/* Continue Reading Card */
+.continue-reading-card {
+    transition: transform 0.3s;
+}
+.continue-reading-card:hover {
+    transform: translateY(-3px);
+}
+    </style>
+    <link rel="stylesheet" href="E-book.css">
+</head>
+<body>
+    <!-- ===== Navbar ===== -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="images/logo1.png" alt="Library Logo" class="rounded-pill" style="height: 50px; width: 50px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link text-primary" href="home.html"><i class="fas fa-home me-1"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="catalog.html"><i class="fas fa-book me-1"></i> Catalog</a></li>
+                    <li class="nav-item"><a class="nav-link active text-primary" href="E-book.html"><i class="fas fa-tablet me-1"></i> E-Books</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="community.html"><i class="fas fa-users me-1"></i> Community</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="Alert.html"><i class="fas fa-bell me-1"></i> Alerts</a></li>
+                </ul>
+                <div class="d-flex">
+                    <button id="darkModeToggle" class="btn btn-sm btn-outline-secondary me-2">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <a href="Login.html" class="btn btn-outline-primary me-2"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
+                    <a href="#" class="btn btn-primary position-relative">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== E-Book Dashboard ===== -->
+    <section class="ebook-dashboard py-5 mt-5">
+        <div class="container">
+        <!--search bar-->
+         <div class="row mb-5">
+                <div class="col-md-8">
+                    <div class="input-group">
+                        <input type="text" class="form-control form-control-lg" placeholder="Search books...">
+                        <button class="btn btn-primary" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <select class="form-select form-select-lg">
+                        <option selected>Filter by...</option>
+                        <option value="title">Book Title</option>
+                        <option value="author">Author</option>
+                        <option value="genre">Genre</option>
+                        <option value="isbn">ISBN</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Continue Reading Section -->
+            <div class="row mb-5">
+                <div class="col-12 d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="bi bi-bookmark-check text-primary me-2"></i> Continue Reading</h2>
+                    <a href="#" class="btn btn-sm btn-outline-primary">View History</a>
+                </div>
+                
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-journal-text text-primary me-3" style="font-size: 2.5rem;"></i>
+                                <div class="flex-grow-1">
+                                    <h5>Design Patterns</h5>
+                                    <p class="text-muted small">Gang of Four</p>
+                                    <div class="progress mb-2" style="height: 6px;">
+                                        <div class="progress-bar bg-success" style="width: 65%"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between small text-muted">
+                                        <span>65% completed</span>
+                                        <span>Page 142/220</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary w-100 mt-2">
+                                        <i class="fas fa-book-open me-1"></i> Resume
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!--book 2-->
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start">
+                                <i class="bi bi-journal-text text-primary me-3" style="font-size: 2.5rem;"></i>
+                                <div class="flex-grow-1">
+                                    <h5>The Art of Hacking</h5>
+                                    <p class="text-muted small">Dana shorth</p>
+                                    <div class="progress mb-2" style="height: 6px;">
+                                        <div class="progress-bar bg-warning" style="width: 45%"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between small text-muted">
+                                        <span>45% completed</span>
+                                        <span>Page 98/220</span>
+                                    </div>
+                                    <button class="btn btn-sm btn-primary w-100 mt-2">
+                                        <i class="fas fa-book-open me-1"></i> Resume
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+            <!--book 3-->
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex align-items-start">
+                            <i class="bi bi-journal-text text-primary me-3" style="font-size: 2.5rem;"></i>
+                            <div class="flex-grow-1">
+                                <h5>The Dark forest theory</h5>
+                                <p class="text-muted small">pr.Marthin Hank </p>
+                                <div class="progress mb-2" style="height: 6px;">
+                                    <div class="progress-bar bg-success" style="width: 55%"></div>
+                                </div>
+                                <div class="d-flex justify-content-between small text-muted">
+                                    <span>55% completed</span>
+                                    <span>Page 116/220</span>
+                                </div>
+                                <button class="btn btn-sm btn-primary w-100 mt-2">
+                                    <i class="fas fa-book-open me-1"></i> Resume
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                
+            </div>
+
+            <!-- E-Books with Rating System -->
+            <div class="row mb-5">
+                <div class="col-12 d-flex justify-content-between align-items-center mb-4">
+                    <h2><i class="bi bi-stars text-warning me-2"></i> Recommended For You</h2>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-sort me-1"></i> Sort By
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Highest Rated</a></li>
+                            <li><a class="dropdown-item" href="#">Most Popular</a></li>
+                            <li><a class="dropdown-item" href="#">Newest</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- E-Book 1 with Rating -->
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                            <div class="ebook-badge">EPUB</div>
+                            <h5 class="card-title">Clean Code</h5>
+                            <p class="text-muted small">Robert C. Martin</p>
+                            
+                            <!-- Star Rating -->
+                            <div class="mb-3">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    <span class="small ms-1">4.5 (128)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <span class="badge bg-light text-dark"><i class="fas fa-download me-1"></i> 43.1MB</span>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                            <button class="btn btn-sm btn-primary w-100 mt-3">
+                                <i class="fas fa-book-open me-1"></i> Read
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                
+                <!-- rated e-books 2 -->
+            
+                <div class="col-md-3 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center p-4">
+                            <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                            <div class="ebook-badge">EPUB</div>
+                            <h5 class="card-title">The art of Hacking</h5>
+                            <p class="text-muted small">C. Martin</p>
+                            
+                            <!-- Star Rating -->
+                            <div class="mb-3">
+                                <div class="rating-stars">
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star text-warning"></i>
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    <span class="small ms-1">4.5 (128)</span>
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex justify-content-between">
+                                <span class="badge bg-light text-dark"><i class="fas fa-download me-1"></i> 56.1MB</span>
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                            <button class="btn btn-sm btn-primary w-100 mt-3">
+                                <i class="fas fa-book-open me-1"></i> Read
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            <!--rated e-book 3-->
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                        <div class="ebook-badge">EPUB</div>
+                        <h5 class="card-title">Harry Potter</h5>
+                        <p class="text-muted small">Jhon Martin</p>
+                        
+                        <!-- Star Rating -->
+                        <div class="mb-3">
+                            <div class="rating-stars">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                                <span class="small ms-1">4.5 (128)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <span class="badge bg-light text-dark"><i class="fas fa-download me-1"></i> 22.1MB</span>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <button class="btn btn-sm btn-primary w-100 mt-3">
+                            <i class="fas fa-book-open me-1"></i> Read
+                        </button>
+                    </div>
+                </div>
+              </div>
+
+              <!--rated e-book 4-->
+
+              <div class="col-md-3 mb-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <i class="bi bi-journal-text text-primary mb-3" style="font-size: 3.5rem;"></i>
+                        <div class="ebook-badge">EPUB</div>
+                        <h5 class="card-title">Romio</h5>
+                        <p class="text-muted small">sheakespeer</p>
+                        
+                        <!-- Star Rating -->
+                        <div class="mb-3">
+                            <div class="rating-stars">
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star-half-alt text-warning"></i>
+                                <span class="small ms-1">4.5 (128)</span>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <span class="badge bg-light text-dark"><i class="fas fa-download me-1"></i> 13.1MB</span>
+                            <button class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                        <button class="btn btn-sm btn-primary w-100 mt-3">
+                            <i class="fas fa-book-open me-1"></i> Read
+                        </button>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Hawassa public Library</h5>
+                    <p>Your Gateway to Knowledge.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Home</a></li>
+                        <li><a href="#" class="text-white">Catalog</a></li>
+                        <li><a href="#" class="text-white">Events</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Us</h5>
+                    <p><i class="fas fa-envelope me-2"></i> contact@hawassapubliclib.com</p>
+                    <p><i class="fas fa-phone me-2"></i> +123 456 7890</p>
+                </div>
+            </div>
+            <hr>
+            <p class="text-center mb-0">&copy; 2025 Hawassa public Library. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+          // Dark Mode Toggle
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('#darkModeToggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        });
+
+        // Check for saved preference on page load
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('#darkModeToggle i').classList.replace('fa-moon', 'fa-sun');
+        };
+
+        // Interactive Rating System
+        document.querySelectorAll('.rating-stars i').forEach(star => {
+            star.addEventListener('mouseover', (e) => {
+                const stars = e.target.parentElement.children;
+                const hoverValue = Array.from(stars).indexOf(e.target) + 1;
+                
+                Array.from(stars).forEach((s, i) => {
+                    s.classList.toggle('fas', i < hoverValue);
+                    s.classList.toggle('far', i >= hoverValue);
+                });
+            });
+            
+            star.addEventListener('click', (e) => {
+                alert(`You rated this ${Array.from(e.target.parentElement.children).indexOf(e.target) + 1} stars!`);
+            });
+        });
+
+        // Progress bar animation
+        document.querySelectorAll('.progress-bar').forEach(bar => {
+            bar.style.transition = 'width 1s ease-in-out';
+        });
+    </script>
+
+<!-- catalog.html -->
+<script type="module">
+    import { apiService } from '../static/js/api.js';  // Fixed path
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchBtn = document.querySelector('.search-btn');
+      const searchInput = document.querySelector('.search-input');
+      const resultsContainer = document.querySelector('.results-container');
+      const loadingIndicator = document.querySelector('.loading');
+      
+      if (!searchBtn || !searchInput) {
+        console.error('Required elements not found');
+        return;
+      }
+  
+      searchBtn.addEventListener('click', async () => {
+        try {
+          loadingIndicator.style.display = 'block';
+          resultsContainer.innerHTML = '';
+          
+          const query = searchInput.value.trim();
+          if (!query) {
+            throw new Error('Please enter a search term');
+          }
+  
+          const results = await apiService.searchBooks(query);
+          renderResults(results);
+        } catch (error) {
+          showError(error.message);
+        } finally {
+          loadingIndicator.style.display = 'none';
+        }
+      });
+  
+      function renderResults(books) {
+        resultsContainer.innerHTML = books.map(book => `
+          <div class="book-card">
+            <h3>${escapeHtml(book.title)}</h3>
+            <p>Author: ${escapeHtml(book.author)}</p>
+            <button class="borrow-btn" data-id="${book.id}">
+              Borrow
+            </button>
+          </div>
+        `).join('');
+  
+        // Add event listeners to new buttons
+        document.querySelectorAll('.borrow-btn').forEach(btn => {
+          btn.addEventListener('click', handleBorrow);
+        });
+      }
+  
+      function handleBorrow(event) {
+        const bookId = event.target.dataset.id;
+        // ... borrowing logic
+      }
+  
+      function escapeHtml(unsafe) {
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+  
+      function showError(message) {
+        const errorEl = document.createElement('div');
+        errorEl.className = 'error-message';
+        errorEl.textContent = message;
+        resultsContainer.prepend(errorEl);
+        setTimeout(() => errorEl.remove(), 5000);
+      }
+    });
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hawassa Library | Sign Up</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+    
+/* Signup Page Specific Styles */
+.signup-body {
+    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+}
+
+.signup-card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.bg-light-blue {
+    background-color:  #f0f8ff;;
+}
+
+.min-vh-100 {
+    min-height: 100vh;
+}
+
+.toggle-password {
+    cursor: pointer;
+}
+
+.divider-text {
+    background: white;
+    padding: 0 10px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Close Button */
+.btn-close-white {
+    color: white;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+}
+
+.btn-close-white:hover {
+    opacity: 1;
+}
+
+/* Password Strength Meter */
+#passwordStrength {
+    height: 5px;
+    margin-top: 5px;
+    background: #e9ecef;
+}
+
+#passwordStrength .progress-bar {
+    transition: width 0.3s;
+}
+
+/* Dark Mode Support */
+.dark-mode .signup-body {
+    background-color: #121212;
+    color: #f8f9fa;
+}
+
+.dark-mode .signup-card {
+    background-color: #1e1e1e;
+    color: #f8f9fa;
+}
+
+.dark-mode .divider-text {
+    background: #1e1e1e;
+}
+
+.dark-mode .form-control, 
+.dark-mode .input-group-text {
+    background-color: #2d2d2d;
+    border-color: #444;
+    color: white;
+}
+
+    </style>
+</head>
+<body class="signup-body">
+    <!-- Main Signup Container -->
+    <div class="container">
+        <div class="row justify-content-center align-items-center min-vh-100">
+            <div class="col-lg-6 col-md-8">
+                <!-- Signup Card -->
+                <div class="card signup-card shadow-lg border-0">
+                    <div class="card-header bg-light-blue text-white text-center py-4 border-0 position-relative">
+                        <!-- Close Button -->
+                        <button class="btn btn-close-dark position-absolute top-0 end-0 m-2" id="closeSignup">
+                            <i class="fas fa-times"></i>
+                        </button>
+                        
+                        <img src="images/logo1.png" alt="Library Logo" class="rounded-circle mb-3" style="width: 150px; height: 150px;">
+                        <h3 class="text-dark">Create Your Account</h3>
+                        <p class=" text-dark mb-0">Join Hawassa Library community</p>
+                    </div>
+                    <div class="card-body p-5">
+                        <!-- Signup Form -->
+                        <form id="signupForm">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="John" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" placeholder="Doe" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-text ">
+                                        <i class="fas fa-envelope"></i>
+                                    </span>
+                                    <input type="email" class="form-control" id="email" placeholder="user@example.com" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-phone"></i>
+                                    </span>
+                                    <input type="tel" class="form-control" id="phone" placeholder="+251 9XX XXX XXX" required>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text ">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+                                    <button class="btn btn-outline-secondary toggle-password" type="button">
+                                        <i class="far fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div id="passwordStrength" class="progress">
+                                    <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                                </div>
+                                <div id="passwordHelp" class="form-text"></div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text ">
+                                        <i class="fas fa-lock"></i>
+                                    </span>
+                                    <input type="password" class="form-control" id="confirmPassword" placeholder="••••••••" required>
+                                </div>
+                                <div id="passwordMatch" class="form-text"></div>
+                            </div>
+                            
+                            <div class="mb-4 form-check">
+                                <input type="checkbox" class="form-check-input" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">I agree to the 
+                                    <a href="#" class="text-primary">Terms of Service</a> and 
+                                    <a href="#" class="text-primary">Privacy Policy</a>
+                                </label>
+                            </div>
+                            
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-user-plus me-2"></i> Create Account
+                                </button>
+                            </div>
+                            
+                            <div class="text-center">
+                                <p class="mb-0">Already have an account? 
+                                    <a href="Login.html" class="text-primary text-decoration-none fw-bold">Log in</a>
+                                </p>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                
+                <!-- Security Notice -->
+                <div class="text-center mt-4 small text-muted">
+                    <i class="fas fa-shield-alt me-1"></i> Your data is securely encrypted
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle Password Visibility
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const passwordInput = this.previousElementSibling;
+                const icon = this.querySelector('i');
+                
+                if (passwordInput.type === "password") {
+                    passwordInput.type = "text";
+                    icon.classList.replace('fa-eye', 'fa-eye-slash');
+                } else {
+                    passwordInput.type = "password";
+                    icon.classList.replace('fa-eye-slash', 'fa-eye');
+                }
+            });
+        });
+
+        // Password Strength Checker
+        document.getElementById('password').addEventListener('input', function() {
+            const password = this.value;
+            const strengthBar = document.querySelector('#passwordStrength .progress-bar');
+            const strengthText = document.getElementById('passwordHelp');
+            
+            // Reset
+            strengthBar.style.width = '0%';
+            strengthBar.className = 'progress-bar';
+            
+            if (password.length === 0) {
+                strengthText.textContent = '';
+                return;
+            }
+            
+            // Strength calculation
+            let strength = 0;
+            if (password.length >= 8) strength += 25;
+            if (/[A-Z]/.test(password)) strength += 25;
+            if (/[0-9]/.test(password)) strength += 25;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+            
+            // Update UI
+            strengthBar.style.width = strength + '%';
+            
+            if (strength < 50) {
+                strengthBar.classList.add('bg-danger');
+                strengthText.textContent = 'Weak password';
+                strengthText.className = 'form-text text-danger';
+            } else if (strength < 75) {
+                strengthBar.classList.add('bg-warning');
+                strengthText.textContent = 'Moderate password';
+                strengthText.className = 'form-text text-warning';
+            } else {
+                strengthBar.classList.add('bg-success');
+                strengthText.textContent = 'Strong password';
+                strengthText.className = 'form-text text-success';
+            }
+        });
+
+        // Password Match Checker
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('password').value;
+            const confirmPassword = this.value;
+            const matchText = document.getElementById('passwordMatch');
+            
+            if (confirmPassword.length === 0) {
+                matchText.textContent = '';
+                return;
+            }
+            
+            if (password === confirmPassword) {
+                matchText.textContent = 'Passwords match';
+                matchText.className = 'form-text text-success';
+            } else {
+                matchText.textContent = 'Passwords do not match';
+                matchText.className = 'form-text text-danger';
+            }
+        });
+
+        // Form Submission
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Validate passwords match
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+            
+            if (!document.getElementById('termsCheck').checked) {
+                alert('You must agree to the terms and conditions');
+                return;
+            }
+            
+            alert('Account created successfully! Redirecting to login...');
+            window.location.href = "Login.html";
+        });
+
+        // Close Button Functionality
+        document.getElementById('closeSignup').addEventListener('click', function() {
+            if(confirm('Are you sure you want to leave?')) {
+                window.location.href = "home.html";
+            }
+        });
+
+        // Dark Mode Toggle (if carrying over from other pages)
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+    </script>
+
+<!-- catalog.html -->
+<script type="module">
+  import { apiService } from '../static/js/api.js';  // Fixed path
+  
+  document.addEventListener('DOMContentLoaded', () => {
+    const searchBtn = document.querySelector('.search-btn');
+    const searchInput = document.querySelector('.search-input');
+    const resultsContainer = document.querySelector('.results-container');
+    const loadingIndicator = document.querySelector('.loading');
+    
+    if (!searchBtn || !searchInput) {
+      console.error('Required elements not found');
+      return;
+    }
+
+    searchBtn.addEventListener('click', async () => {
+      try {
+        loadingIndicator.style.display = 'block';
+        resultsContainer.innerHTML = '';
+        
+        const query = searchInput.value.trim();
+        if (!query) {
+          throw new Error('Please enter a search term');
+        }
+
+        const results = await apiService.searchBooks(query);
+        renderResults(results);
+      } catch (error) {
+        showError(error.message);
+      } finally {
+        loadingIndicator.style.display = 'none';
+      }
+    });
+
+    function renderResults(books) {
+      resultsContainer.innerHTML = books.map(book => `
+        <div class="book-card">
+          <h3>${escapeHtml(book.title)}</h3>
+          <p>Author: ${escapeHtml(book.author)}</p>
+          <button class="borrow-btn" data-id="${book.id}">
+            Borrow
+          </button>
+        </div>
+      `).join('');
+
+      // Add event listeners to new buttons
+      document.querySelectorAll('.borrow-btn').forEach(btn => {
+        btn.addEventListener('click', handleBorrow);
+      });
+    }
+
+    function handleBorrow(event) {
+      const bookId = event.target.dataset.id;
+      // ... borrowing logic
+    }
+
+    function escapeHtml(unsafe) {
+      return unsafe
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function showError(message) {
+      const errorEl = document.createElement('div');
+      errorEl.className = 'error-message';
+      errorEl.textContent = message;
+      resultsContainer.prepend(errorEl);
+      setTimeout(() => errorEl.remove(), 5000);
+    }
+  });
+</script>
+</body>
+</html>
