@@ -20,10 +20,17 @@ const loanSchema = new mongoose.Schema({
         type:Date
     },
     fine:{
-        type:Number
+        type:Number,
+        required: true
+    },
+
+    paid: {
+        type: Boolean,
+        default: false
     }
+
 },{timeseries:true})
 
 const loanModel = mongoose.model("loan",loanSchema)
 
-model.exports = { loanModel }
+module.exports = { loanModel }

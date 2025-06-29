@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hawassa Library | Community</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome & Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- FullCalendar CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+    <!-- internal CSS -->
+    <style>
+       
+     /* Dark Mode */
+        body.dark-mode {
+            background: #121212;
+            color: #f8f9fa;
+        }
+        .dark-mode .navbar, 
+        .dark-mode .card {
+            background: #1e1e1e !important;
+            color: rgb(64, 64, 240);
+        }
+        .dark-mode .btn-primary {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .dark-mode .btn-outline-primary {
+            color: #0d6efd;
+            border-color: #0d6efd;
+        }
+        .dark-mode .text-primary {
+            color: #0d6efd !important;
+        }
+        .dark-mode .list-group{
+        background: #1e1e1e ;
+            color: rgb(64, 64, 240);
+        }
+
+        /* Card Hover Effects */
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.1) !important;
+        }
+
+        /* Star Ratings */
+        .rating-stars {
+            color: #ffc107;
+            font-size: 0.9rem;
+        }
+
+        /* Footer Styling */
+        footer hr {
+            border-color: #444;
+        }
+        
+    </style>
+    <link rel="stylesheet" href="community.css">
+</head>
+<body>
+     <!-- ===== Navbar ===== -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="images/logo1.png" alt="Library Logo" class="rounded-pill" style="height: 50px; width: 50px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link text-primary" href="home.html"><i class="fas fa-home me-1"></i> Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="catalog.html"><i class="fas fa-book me-1"></i> Catalog</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="E-book.html"><i class="fas fa-tablet me-1"></i> E-Books</a></li>
+                    <li class="nav-item"><a class="nav-link active text-primary" href="Community.html"><i class="fas fa-users me-1"></i> Community</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="Alert.html"><i class="fas fa-bell me-1"></i> Alerts</a></li>
+                </ul>
+                <div class="d-flex">
+                    <button id="darkModeToggle" class="btn btn-sm btn-outline-secondary me-2">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <a href="Login.html" class="btn btn-outline-primary me-2"><i class="fas fa-sign-in-alt me-1"></i> Login</a>
+                    <a href="#" class="btn btn-primary position-relative">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">3</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- ===== Community Dashboard ===== -->
+    <section class="community-dashboard py-5 mt-5">
+        <div class="container">
+            <!-- User Profile Section -->
+            <div class="row mb-5">
+                <div class="col-lg-4 mb-4">
+                    <div class="card border-0 shadow-lg profile-card">
+                        <div class="card-body text-center">
+                            <img src="images/profile.jpg" class="rounded-circle mb-3" style="width: 70px; height: 70px;" alt="Profile">
+                            <h4>Mark</h4>
+                            <p class="text-muted">Member since 2022</p>
+                            
+                            <!-- Achievement Badges -->
+                            <div class="d-flex justify-content-center flex-wrap mb-3">
+                                <span class="badge bg-warning text-dark mx-2 my-2">
+                                    <i class="fas fa-book-reader me-1"></i> Bookworm
+                                </span>
+                                <span class="badge bg-info text-white mx-2 my-2">
+                                    <i class="fas fa-lightbulb me-1"></i> Idea Contributor
+                                </span>
+                                <span class="badge bg-success text-white mx-2 my-2">
+                                    <i class="fas fa-calendar-check me-1"></i> Event Regular
+                                </span>
+                            </div>
+                            
+                            <div class="d-flex justify-content-center gap-2">
+                                <button class="btn btn-sm btn-outline-primary">
+                                    <i class="fab fa-facebook-f"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-info">
+                                    <i class="fab fa-twitter"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline-danger">
+                                    <i class="fab fa-instagram"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <!-- Discussion Forums -->
+            <div class="row mb-5">
+                <div class="col-12 mb-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h3><i class="fas fa-comments text-primary me-2"></i> Discussion Forums</h3>
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#newTopicModal">
+                            <i class="fas fa-plus me-1"></i> New Topic
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-light-blue d-flex justify-content-between">
+                            <h5 class="mb-0">Book Discussions</h5>
+                            <span class="badge bg-white text-primary">24 new</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Thoughts on "Dertogada" ending?</strong>
+                                        <small class="text-muted">2h ago</small>
+                                    </div>
+                                    <small class="text-muted">Started by Nati • 15 replies</small>
+                                </a>
+
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Don't die before reading Alemenor</strong>
+                                        <small class="text-muted">2h ago</small>
+                                    </div>
+                                    <small class="text-muted">Started by Hellon • 15 replies</small>
+                                </a>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-light-blue">
+                            <h5 class="mb-0 ">Library Suggestions</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="list-group list-group-flush">
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Extended weekend hours?</strong>
+                                        <small class="text-muted">1d ago</small>
+                                    </div>
+                                    <small class="text-muted">Started by Minte • 8 replies</small>
+                                </a>
+
+                                <a href="#" class="list-group-item list-group-item-action">
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Top 10 cyber books</strong>
+                                        <small class="text-muted">2d ago</small>
+                                    </div>
+                                    <small class="text-muted">Started Mark • 8 replies</small>
+                                </a>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- calendar section: -->
+            <div class="row mb-5">
+              <div class="col-12 mb-4">
+                <div class="d-flex justify-content-between align-items-center">
+                   <h3><i class="fas fa-calendar-alt text-primary me-2"></i> Event Calendar</h3>
+                    <div class="btn-group btn-group-sm">
+                       <button class="btn btn-outline-primary active" id="monthView">Month</button>
+                       <button class="btn btn-outline-primary" id="weekView">Week</button>
+                       <button class="btn btn-outline-primary" id="listView">List</button>
+                    </div>
+                </div>
+            </div>
+          <div class="col-12">
+          <div class="card border-0 shadow-sm">
+            <div class="card-body p-1">
+                <div id="communityCalendar" style="height: 150px;"></div>  
+            </div>
+        </div>
+    </div>
+  </div>
+
+            <!-- Social Media Integration -->
+            <div class="row">
+                <div class="col-12 mb-4">
+                    <h3><i class="fas fa-hashtag text-primary me-2"></i> Community Buzz</h3>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-light-blue  d-flex justify-content-between">
+                            <h5 class="mb-0"><i class="fab fa-twitter me-2"></i> </h5>
+                            <a href="#" class="text-primary small" style="text-decoration: none;">Follow us</a>
+                        </div>
+                        <div class="card-body">
+                            <!-- Twitter Widget -->
+                            <div class="social-widget">
+                                <div class="d-flex mb-3">
+                                    <img src="images/book5.jpg" class="rounded-circle me-3" style="height: 40px; width: 55px;" alt="User">
+                                    <div>
+                                        <strong>@HawassaLibrary</strong>
+                                        <p class="mb-0 small">Join us tomorrow for the summer reading challenge kickoff! #ReadingSeason</p>
+                                        <small class="text-muted">2 hours ago</small>
+                                    </div>
+                                </div>
+                                <!-- Add more tweets -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--facebook widgets-->
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-light-blue  d-flex justify-content-between">
+                            <h5 class="mb-0"><i class="fab fa-facebook me-2"></i> </h5>
+                            <a href="#" class="text-primary small" style="text-decoration: none;">Follow us</a>
+                        </div>
+                        <div class="card-body">
+                        
+                            <div class="social-widget">
+                                <div class="d-flex mb-3">
+                                    <img src="images/book5.jpg" class="rounded-circle me-3" style="height: 40px; width: 55px;" alt="User">
+                                    <div>
+                                        <strong>@HawassaLibrary</strong>
+                                        <p class="mb-0 small">Join us tomorrow for the summer reading challenge kickoff! #ReadingSeason</p>
+                                        <small class="text-muted">2 hours ago</small>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Instagram widgets -->
+
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-header bg-light-blue  d-flex justify-content-between">
+                            <h5 class="mb-0"><i class="fab fa-instagram me-2"></i> </h5>
+                            <a href="#" class="text-primary small" style="text-decoration: none;">Follow us</a>
+                        </div>
+                        <div class="card-body">
+                            
+                            <div class="social-widget">
+                                <div class="d-flex mb-3">
+                                    <img src="images/book5.jpg" class="rounded-circle me-3" style="height: 40px; width: 55px;" alt="User">
+                                    <div>
+                                        <strong>@HawassaLibrary</strong>
+                                        <p class="mb-0 small">Join us tomorrow for the summer reading challenge kickoff! #ReadingSeason</p>
+                                        <small class="text-muted">2 hours ago</small>
+                                    </div>
+                                </div>
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- New Topic Modal -->
+    <div class="modal fade" id="newTopicModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-light-blue text-white">
+                    <h5 class="modal-title">Start New Discussion</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Topic Title</label>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Forum Category</label>
+                            <select class="form-select">
+                                <option>Book Discussions</option>
+                                <option>Library Suggestions</option>
+                                <option>Events</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Your Message</label>
+                            <textarea class="form-control" rows="4"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-paper-plane me-1"></i> Post Topic
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--footer-->
+
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <h5>Hawassa public Library</h5>
+                    <p>Your Gateway to Knowledge.</p>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-white">Home</a></li>
+                        <li><a href="#" class="text-white">Catalog</a></li>
+                        <li><a href="#" class="text-white">Events</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <h5>Contact Us</h5>
+                    <p><i class="fas fa-envelope me-2"></i> contact@hawassapubliclib.com</p>
+                    <p><i class="fas fa-phone me-2"></i> +123 456 7890</p>
+                </div>
+            </div>
+            <hr>
+            <p class="text-center mb-0">&copy; 2025 Hawassa public Library. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+    <script>
+        // Dark Mode Toggle
+        document.getElementById('darkModeToggle').addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('#darkModeToggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.replace('fa-moon', 'fa-sun');
+            } else {
+                icon.classList.replace('fa-sun', 'fa-moon');
+            }
+            localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        });
+
+        // Check for saved preference on page load
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('#darkModeToggle i').classList.replace('fa-moon', 'fa-sun');
+        }
+        /*Initialize Calendar*/
+      
+    document.addEventListener('DOMContentLoaded', function() {
+        const calendarEl = document.getElementById('communityCalendar');
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            height: 'auto', // Makes calendar fit container
+            contentHeight: 350, // Further controls inner height
+            headerToolbar: false, // Disable default header
+            aspectRatio: 1.2, // Makes cells more rectangular
+            dayMaxEventRows: 2, // Limits visible events per day
+            events: [
+                {
+                    title: 'Author Meetup',
+                    start: '2023-06-15',
+                    color: '#007bff',
+                    display: 'list-item' // Compact event display
+                },
+                
+            ]
+        });
+        calendar.render();
+
+        // Custom view controls
+        document.getElementById('monthView').addEventListener('click', () => {
+            calendar.changeView('dayGridMonth');
+            updateActiveButton('monthView');
+        });
+        document.getElementById('weekView').addEventListener('click', () => {
+            calendar.changeView('timeGridWeek');
+            updateActiveButton('weekView');
+        });
+        document.getElementById('listView').addEventListener('click', () => {
+            calendar.changeView('listWeek');
+            updateActiveButton('listView');
+        });
+
+        function updateActiveButton(activeId) {
+            ['monthView', 'weekView', 'listView'].forEach(id => {
+                document.getElementById(id).classList.toggle('active', id === activeId);
+            });
+        }
+    });
+  
+        // Social Media Widget Tabs
+        const socialTabs = new bootstrap.Tab('[data-bs-toggle="tab"]');
+        
+        // Forum Topic Submission
+        document.querySelector('#newTopicModal form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Your discussion topic has been posted!');
+            bootstrap.Modal.getInstance('#newTopicModal').hide();
+        });
+    
+
+        // Check for saved preference on page load
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark-mode');
+            document.querySelector('#darkModeToggle i').classList.replace('fa-moon', 'fa-sun');
+        }
+
+    </script>
+
+<!-- catalog.html -->
+<script type="module">
+    import { apiService } from '../static/js/api.js';  // Fixed path
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchBtn = document.querySelector('.search-btn');
+      const searchInput = document.querySelector('.search-input');
+      const resultsContainer = document.querySelector('.results-container');
+      const loadingIndicator = document.querySelector('.loading');
+      
+      if (!searchBtn || !searchInput) {
+        console.error('Required elements not found');
+        return;
+      }
+  
+      searchBtn.addEventListener('click', async () => {
+        try {
+          loadingIndicator.style.display = 'block';
+          resultsContainer.innerHTML = '';
+          
+          const query = searchInput.value.trim();
+          if (!query) {
+            throw new Error('Please enter a search term');
+          }
+  
+          const results = await apiService.searchBooks(query);
+          renderResults(results);
+        } catch (error) {
+          showError(error.message);
+        } finally {
+          loadingIndicator.style.display = 'none';
+        }
+      });
+  
+      function renderResults(books) {
+        resultsContainer.innerHTML = books.map(book => `
+          <div class="book-card">
+            <h3>${escapeHtml(book.title)}</h3>
+            <p>Author: ${escapeHtml(book.author)}</p>
+            <button class="borrow-btn" data-id="${book.id}">
+              Borrow
+            </button>
+          </div>
+        `).join('');
+  
+        // Add event listeners to new buttons
+        document.querySelectorAll('.borrow-btn').forEach(btn => {
+          btn.addEventListener('click', handleBorrow);
+        });
+      }
+  
+      function handleBorrow(event) {
+        const bookId = event.target.dataset.id;
+        // ... borrowing logic
+      }
+  
+      function escapeHtml(unsafe) {
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+  
+      function showError(message) {
+        const errorEl = document.createElement('div');
+        errorEl.className = 'error-message';
+        errorEl.textContent = message;
+        resultsContainer.prepend(errorEl);
+        setTimeout(() => errorEl.remove(), 5000);
+      }
+    });
+  </script>
+</body>
+</html>
+

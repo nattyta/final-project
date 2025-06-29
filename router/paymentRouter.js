@@ -1,20 +1,28 @@
+// router/paymentRouter.js
 const express = require('express');
-const PaymentController = require('../controllers/paymentController');
-const authMiddleware = require('../middlewares/authMiddleware');
-
 const router = express.Router();
+const PaymentController = require('../controller/paymentController');
+const { checkUser } = require('../controller/authController');
 
-router.use(authMiddleware);
+// Public endpoints
+router.post('/initiate', checkUser, PaymentController.initiatePayment);
+router.post('/verify/:paymentId', PaymentController.verifyPayment); // Webhook doesn't need auth
 
-// Initialize payment
-router.post('/initiate', PaymentController.initiatePayment);
+// Authenticated routes
 
-// Verify payment (callback from Chapa)
-router.get('/verify/:paymentId', PaymentController.verifyPayment);
 
-// Get user payment history
-router.get('/history', PaymentController.getPaymentHistory);
-
+router.use(checkUser);
+router.get('/history', checkUser, PaymentController.getPaymentHistory);
 router.post('/webhook', express.raw({type: 'application/json'}), PaymentController.handleWebhook);
+
+
+router.get('/debug', (req, res) => {
+    console.log('Request user:', req.user);
+    res.json({ 
+      user: req.user,
+      headers: req.headers,
+      cookies: req.cookies
+    });
+  });
 
 module.exports = router;

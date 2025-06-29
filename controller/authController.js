@@ -78,38 +78,55 @@ const login = async(req, res)=>{
     }
 }
 
-const checkUser = async(req,res, next)=>{
+const checkUser = async (req, res, next) => {
     try {
-        // console.log(req.cookies)
-        const token = req.cookies.jwt
-        if(!token){
-            res.status(400).json({
-                message:"you are not logged in! please login."
-            })
-            return
-        }
-        jwt.verify(token, process.env.JWT_SECRET, (err, user)=>{
-            if(err){
-                res.status(400).json({
-                    message:"Something went Wrong! try again later"
-                })
-                return
-            }
-            req.user = user
-            next()
-        })
+      // Get token from either cookie or Authorization header
+      let token;
+      if (req.cookies.jwt) {
+        token = req.cookies.jwt;
+      } else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+        token = req.headers.authorization.split(' ')[1];
+      }
+  
+      if (!token) {
+        console.log('No token found in request');
+        return res.status(401).json({ message: "Authentication required" });
+      }
+  
+      // Verify token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      console.log('Decoded token:', decoded);
+  
+      // Get fresh user from database
+      const user = await userModel.findById(decoded.id).select('-password');
+      console.log('Found user:', user);
+  
+      if (!user) {
+        console.log('User not found in database');
+        return res.status(404).json({ message: "User not found" });
+      }
+  
+      // Attach essential user data to request
+      req.user = {
+        _id: user._id,
+        email: user.email,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        phoneNumber: user.phoneNumber
+      };
+      
+      console.log('Attached user to request:', req.user);
+      next();
     } catch (error) {
-        res.status(500).json({
-            error:error.message
-        })
+      console.error('Authentication error:', error.message);
+      if (error.name === 'JsonWebTokenError') {
+        return res.status(401).json({ message: "Invalid token" });
+      }
+      if (error.name === 'TokenExpiredError') {
+        return res.status(401).json({ message: "Token expired" });
+      }
+      res.status(500).json({ message: "Authentication failed" });
     }
-}
-
-const checkrole = async(role)=>{
-    return(req,res,next)=>{
-        
-    }
-}
-
+  };
 
 module.exports = { signup, login, checkUser }
