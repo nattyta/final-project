@@ -324,29 +324,34 @@
           await book.save();
       
           // 📣 SEND NOTIFICATION
-          const notificationData = {
-            userId,
-            title: fee > 0
-              ? "📚 Book Returned Late"
-              : "✅ Book Returned",
-            message: fee > 0
-              ? `You returned "${book.title}" ${daysLate} days late. You owe ${fee.toFixed(2)} birr. You cannot borrow books until payment is made.`
-              : `You have returned "${book.title}". Thank you!`,
-            type: fee > 0 ? "fine" : "info",
-            email: user.email,
-          };
-      
-          if (checkoutUrl) {
-            notificationData.actionUrl = checkoutUrl;
-          }
-      
-          await sendNotification(notificationData);
-      
-          return res.status(200).json({
-            message: "Returned successfully.",
-            fee: fee > 0 ? fee : null,
-            checkoutUrl
-          });
+          // 📣 SEND NOTIFICATION
+console.log("📣 Preparing to send in-app notification...");
+
+const notificationPayload = {
+  userId,
+  title: fee > 0
+    ? "📚 Book Returned Late"
+    : "✅ Book Returned",
+  message: fee > 0
+    ? `You returned "${book.title}" ${daysLate} days late. You owe ${fee.toFixed(2)} birr. You cannot borrow books until payment is made.`
+    : `You have returned "${book.title}". Thank you!`,
+  type: fee > 0 ? "fine" : "info",
+  ...(fee > 0 && checkoutUrl ? { actionUrl: checkoutUrl } : {})
+};
+
+console.log("📦 Notification Payload:", notificationPayload);
+
+await sendNotification(notificationPayload);
+
+console.log("✅ In-app notification sent successfully");
+
+return res.status(200).json({
+  message: "Returned successfully.",
+  fee: fee > 0 ? fee : null,
+  checkoutUrl
+});
+
+         
       
         } catch (error) {
           console.error(error);
