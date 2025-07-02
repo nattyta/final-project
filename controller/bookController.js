@@ -142,82 +142,104 @@
         }
     }
 
+    const crypto = require("crypto"); // Make sure to require this at the top
+    const { sendEmail } = require("../utils/emailService");
+    
     const loanBook = async (req, res) => {
-        console.log("loan book route fires");
-        const userId = req.body.userId;
-        const bookId = req.params.id;
-      
-        try {
-          const loans = await loanModel.find({ userId });
-          const hasUnpaidFines = loans.some(loan => loan.fine !== null && loan.fine > 0 && !loan.paid);
-          const hasUnreturnedBooks = loans.some(loan => !loan.returned);
-      
-          if (hasUnpaidFines) {
-            return res.status(403).json({
-              message: "You have unpaid fines. Please complete your payment before borrowing new books."
-            });
-          }
-      
-          if (hasUnreturnedBooks) {
-            return res.status(403).json({
-              message: "You must return your current loaned books before borrowing a new one."
-            });
-          }
-      
-          const book = await bookModel.findById(bookId);
-          const reservations = await reservationModel.find();
-      
-          if (!book) {
-            res.status(404).json({
-              message: "book not found."
-            });
-            return;
-          }
-      
-          if (book.available_copies > 0 && book.status == "available") {
-            let loan = new loanModel({
-              bookId: bookId,
-              issueDate: new Date(),
-              dueDate: new Date(new Date().setDate(new Date().getDate() - 8)) 
-            });
-            loan.userId.push(userId);
-            const loaned = await loan.save();
-            res.status(200).json({
-              success: true,
-              loaned
-            });
-      
-            if (loaned) {
-              book.available_copies--;
-              await book.save();
-      
-              const user = await userModel.findById(userId);
-              const dueDate = new Date(loaned.dueDate).toLocaleDateString();
-      
-              await sendNotification({
-                userId,
-                title: "📚 Book Loaned Successfully",
-                message: `You have borrowed "${book.title}". Please return it by ${dueDate}.`,
-                type: "reminder",
-                email: user.email
-              });
-            }
-          } else {
-            res.status(404).json({
-              message: "book is not available in our catalog. we will inform you when book is available."
-            });
-          }
-      
-          // 🧹 Removed reservation + prevLoan redundancy
-          // If you still want reservation logic, move it outside this condition and make it smartly check book availability
-      
-        } catch (error) {
-          res.status(500).json({
-            error
+      console.log("📚 loanBook route fired");
+    
+      const userId = req.body.userId;
+      const bookId = req.params.id;
+    
+      try {
+        const loans = await loanModel.find({ userId });
+    
+        const hasUnpaidFines = loans.some(
+          (loan) => loan.fine !== null && loan.fine > 0 && !loan.paid
+        );
+        const hasUnreturnedBooks = loans.some((loan) => !loan.returned);
+    
+        if (hasUnpaidFines) {
+          return res.status(403).json({
+            message:
+              "You have unpaid fines. Please complete your payment before borrowing new books.",
           });
-          console.log(error);
         }
-      };
+    
+        if (hasUnreturnedBooks) {
+          return res.status(403).json({
+            message:
+              "You must return your current loaned books before borrowing a new one.",
+          });
+        }
+    
+        const book = await bookModel.findById(bookId);
+        const reservations = await reservationModel.find();
+    
+        if (!book) {
+          return res.status(404).json({
+            message: "Book not found.",
+          });
+        }
+    
+        if (book.available_copies > 0 && book.status === "available") {
+          // ✅ Generate 6-digit verification code
+          const verificationCode = Math.floor(100000 + Math.random() * 900000).toString();
+    
+          // 💾 Create loan entry
+          let loan = new loanModel({
+            bookId: bookId,
+            issueDate: new Date(),
+            dueDate: new Date(new Date().setDate(new Date().getDate() - 8)),
+            verificationCode,
+          });
+    
+          loan.userId.push(userId);
+          const loaned = await loan.save();
+    
+          res.status(200).json({
+            success: true,
+            loaned,
+          });
+    
+          if (loaned) {
+            book.available_copies--;
+            await book.save();
+    
+            const user = await userModel.findById(userId);
+            const dueDate = new Date(loaned.dueDate).toLocaleDateString();
+    
+            // 📨 Send in-app notification
+            await sendNotification({
+              userId,
+              title: "📚 Book Loaned Successfully",
+              message: `You have borrowed "${book.title}". Please return it by ${dueDate}.`,
+              type: "reminder",
+              email: user.email,
+            });
+    
+            // 📧 Send verification code via email
+            console.log("📧 Sending verification code to:", user.email);
+            await sendEmail({
+              to: user.email,
+              subject: `📘 Verification Code for "${book.title}"`,
+              text: `Your verification code to pick up the book "${book.title}" is: ${verificationCode}`,
+            });
+    
+            console.log("✅ Verification email sent");
+          }
+        } else {
+          return res.status(404).json({
+            message:
+              "Book is not available in our catalog. We will inform you when it becomes available.",
+          });
+        }
+      } catch (error) {
+        console.error("❌ Error in loanBook:", error);
+        return res.status(500).json({ error: error.message });
+      }
+    };
+    
       
 
       const returnBook = async (req, res) => {
