@@ -1,6 +1,7 @@
 const axios = require('axios');
 const Payment = require('../model/paymentModel');
 const { loanModel } = require('../model/loanModel');
+const { userModel } = require("../model/userModel");
 
 class PaymentService {
   // 🔁 Handles the payment init logic and delegates to startPayment
@@ -36,7 +37,7 @@ class PaymentService {
           });
         }
 
-        if (typeof loan.fine === "number" && loan.fine > 0) {
+        if (loan.fine !== null && typeof loan.fine === "number" && loan.fine > 0)          {
           finalAmount = loan.fine;
           finalDescription = `Overdue fine for loan ${loanId}`;
           console.log("💰 Fetched fine from loan:", finalAmount);
@@ -193,6 +194,32 @@ class PaymentService {
       });
     }
   }
+  static async createFinePayment(userId, loanId, amount) {
+    try {
+      const user = await userModel.findById(userId);
+      if (!user || !user.email) {
+        throw new Error("User not found or missing email.");
+      }
+  
+      const result = await PaymentService.startPayment({
+        userId,
+        loanId,
+        amount,
+        email: user.email,
+        firstName: user.firstname,
+        lastName: user.lastname,
+        phone: user.phoneNumber,
+        description: `Overdue fine for loan ${loanId}`
+      });
+  
+      return result;
+  
+    } catch (error) {
+      console.error("🚨 createFinePayment error:", error);
+      throw new Error("Failed to create fine payment: " + error.message);
+    }
+  }
+  
 }
 
 module.exports = PaymentService;

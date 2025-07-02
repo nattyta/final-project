@@ -12,7 +12,7 @@ const notificationSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["payment", "reminder", "warning"],
+    enum: ["payment", "reminder", "warning","fine"],
     default: "payment"
   },
   isRead: {
@@ -20,7 +20,14 @@ const notificationSchema = new mongoose.Schema({
     default: false
   },
   title: String,
-  notified: { type: Boolean, default: false }
+  notified: { type: Boolean, default: false },
+
+  sent: {
+    inApp: { type: Boolean, default: false },
+    email: { type: Boolean, default: false },
+    push: { type: Boolean, default: false }
+  }
+  
 
 }, { timestamps: true });
 

@@ -1,328 +1,371 @@
-const { bookModel } = require("../model/bookModel")
-const { loanModel } = require("../model/loanModel")
-const { reservationModel } = require("../model/reservationModel")
-const fs = require("fs")
-const { calculateFine } = require("../utils/calculateFee")
-const { userModel } = require("../model/userModel")
-const { createFinePayment } = require('../services/finePaymentService')
-const { sendNotification } = require("../utils/sendNotification"); // adjust path if needed
+    const { bookModel } = require("../model/bookModel")
+    const { loanModel } = require("../model/loanModel")
+    const { reservationModel } = require("../model/reservationModel")
+    const fs = require("fs")
+    const { calculateFine } = require("../utils/calculateFee")
+    const { userModel } = require("../model/userModel")
+    const PaymentService = require('../services/paymentService');
+    const { sendNotification } = require("../utils/sendNotification"); 
+    const { checkUser } = require("../controller/authController")
 
-const getHardCopyBooks = async(req, res)=>{
-    try {
-        const query = req.query
-        const hardCopyBooks = await bookModel.find({isHardCopy:true})
+    const getHardCopyBooks = async(req, res)=>{
+        try {
+            const query = req.query
+            const hardCopyBooks = await bookModel.find({isHardCopy:true})
 
-        if(!hardCopyBooks){
-            res.status(404).json({
-                message:"there is no hard copy books."
-            })
-            return;
-        }
-        res.status(200).json({
-            success:true,
-            book:hardCopyBooks
-        })
-    } catch (error) {
-        res.status(500).json({
-            error:error.message
-        })
-        console.log(error)
-    }
-}
-const getAllbooks = async(req,res)=>{
-    console.log("get all book route fired")
-
-    try {
-        const books = await bookModel.find()
-        res.status(200).json({
-            success:true,
-            books
-        })
-    } catch (error) {
-        res.status(500).json({
-            error:error.message
-        })
-    }
-}
-
-const getBookById = async(req,res)=>{
-    try {
-        const book = await bookModel.findById(req.params.id)
-        if(!book){
-            res.status(404).json({
-                message:"book not found."
-            })
-            return
-        }
-        res.status(200).json({
-            success:true,
-            book
-        })
-    } catch (error) {
-        res.status(500).json({
-            error:error.message
-        })
-    }
-}
-
-
-
-const uploadBook = async(req,res)=>{
-    console.log("upload book route fired")
-    const book = req.files['book']?.[0].originalname || '';
-    const coverImage = req.files['coverImage']?.[0].originalname || '';
-    try {
-        console.log(req.body)
-        let isHardCopy;
-        if(req.body.type ==='hardcopy'){
-            isHardCopy = true
-        }
-        console.log(isHardCopy)
-        const uploadedBook = new bookModel({
-            ...req.body,
-            book:book,
-            coverImage:coverImage,
-            isHardCopy,
-            available_copies:req.body.total_copies
-            })
-
-            const saved = await uploadedBook.save();
-        res.status(200).json({ 
-            book:saved
-        })
-
-    } catch (error) {
-        res.status(500).json({
-            error:error.message
-        })
-        console.log(error.message)
-    }
-  
-}
-
-const updateBook = async(req, res)=>{
-    console.log("update book route fires")
-    try {
-        const bookfile = req.files['book']?.[0].originalname || '';
-        const coverImage = req.files['coverImage']?.[0].originalname || '';
-        const updatedBook = await bookModel.findByIdAndUpdate(req.params.id,
-                                                        {
-                                                        ...req.body,
-                                                        book:bookfile,
-                                                        coverImage:coverImage
-                                                        })
-            res.status(200).json({message:"book updated successfully." })
-    } catch (error) {
-        res.status(500).json({
-            error:error.message
-        })
-        console.log(error)
-    }
-}
-
-const deleteBook = async(req,res)=>{
-    const bookId = req.params.id
-    console.log("delete book route fired")
-    try {
-        if(!bookId){
-            res.status(404).json({
-                error:"book not found."
-            })
-            return
-        }
-        await bookModel.findByIdAndDelete(bookId)
-        res.status(204).json({
-            message:"successfully deleted the book"
-        })
-    } catch (error) {
-        res.status(500).json({
-            error:error.message
-        })
-    }
-}
-
-const loanBook = async(req,res)=>{
-    console.log("loan book route fires")
-    const userId = req.body.userId
-    const bookId = req.params.id
-    
-    try { 
-        const loans = await loanModel.find({userId, returned:false})
-        const book = await bookModel.findById(bookId)
-        const reservations = await reservationModel.find();
-        
-
-
-        if(!book){
-            res.status(404).json({
-                message:"book not found."
-            })
-            return
-        }
-        console.log("UserId from body:", userId)
-        console.log("Loan query result:", loans)
-
-        let prevLoan = Array.isArray(loans) ? loans.findIndex(loan => loan.userId.includes(userId)) : -1;
-        let prevReservation = reservations.findIndex(res => res.userId.includes(userId));
-        console.log(prevLoan)
-        
-        if(prevLoan == -1){
-            if(book.available_copies > 0 && book.status == "available"){
-               let loan = new loanModel({
-                    bookId:bookId,
-                    issueDate:new Date(),
-                    dueDate:new Date(new Date().setDate(new Date().getDate() - 5))
-                })
-                loan.userId.push(userId)
-                const loaned = await loan.save();
-                res.status(200).json({
-                    success:true,
-                    loaned
-                })
-    
-                if (loaned) {
-                    book.available_copies--;
-                    await book.save();
-                  
-                    
-                    const user = await userModel.findById(userId);
-                    const dueDate = new Date(loaned.dueDate).toLocaleDateString();
-                  
-                    await sendNotification({
-                      userId,
-                      title: "📚 Book Loaned Successfully",
-                      message: `You have borrowed "${book.title}". Please return it by ${dueDate}.`,
-                      type: "reminder",
-                      email: user.email
-                    });
-                  }
-
-                
-
-
-            }else{
+            if(!hardCopyBooks){
                 res.status(404).json({
-                    message:"book is not availabe in our catalog. we will inform you when book is available."
+                    message:"there is no hard copy books."
                 })
+                return;
             }
+            res.status(200).json({
+                success:true,
+                book:hardCopyBooks
+            })
+        } catch (error) {
+            res.status(500).json({
+                error:error.message
+            })
+            console.log(error)
         }
-        else{
-            res.status(400).json({
-                message:"you must return loaned book in order to loan new one."
+    }
+    const getAllbooks = async(req,res)=>{
+        console.log("get all book route fired")
+
+        try {
+            const books = await bookModel.find()
+            res.status(200).json({
+                success:true,
+                books
+            })
+        } catch (error) {
+            res.status(500).json({
+                error:error.message
             })
         }
-        if(prevReservation == -1){
-          
-            if(prevLoan == -1 ){
-                let reservation = new reservationModel({
-                    userId:userId,
-                    bookId:book,
-                    reservationDate:Date.now(),
-                    status:"pending"
-                })
-                
-                await reservation.save();
-                res.status(200).json({
+    }
+
+    const getBookById = async(req,res)=>{
+        try {
+            const book = await bookModel.findById(req.params.id)
+            if(!book){
+                res.status(404).json({
+                    message:"book not found."
                 })
                 return
-
             }
-            res.status(403).json({
-                message:"you must return loaned book in order to loan new one."
+            res.status(200).json({
+                success:true,
+                book
             })
-
-        }else{
-            res.status(400).json({
-                message:"you already have previous reservation."
-            })
-        }
-        if(prevLoan == 0){
-            res.status(400).json({
-                message:"you must return loaned book in order to loan new one."
+        } catch (error) {
+            res.status(500).json({
+                error:error.message
             })
         }
-
-
-    } catch (error) {
-        res.status(500).json({
-            error
-        })
-        console.log(error)
     }
-}
-
-const returnBook = async(req,res)=>{
-    try {
-     const{ userId, bookId }= req.body
-     let loans = await loanModel.findOne({ userId: { $in: [userId] }, bookId, returned: false });
 
 
-        if(!loans){
-            console.log("there is no loan")
-            res.status(400).json({
-                message:"you are not loaned any book"
+
+    const uploadBook = async(req,res)=>{
+        console.log("upload book route fired")
+        const book = req.files['book']?.[0].originalname || '';
+        const coverImage = req.files['coverImage']?.[0].originalname || '';
+        try {
+            console.log(req.body)
+            let isHardCopy;
+            if(req.body.type ==='hardcopy'){
+                isHardCopy = true
+            }
+            console.log(isHardCopy)
+            const uploadedBook = new bookModel({
+                ...req.body,
+                book:book,
+                coverImage:coverImage,
+                isHardCopy,
+                available_copies:req.body.total_copies
+                })
+
+                const saved = await uploadedBook.save();
+            res.status(200).json({ 
+                book:saved
+            })
+
+        } catch (error) {
+            res.status(500).json({
+                error:error.message
+            })
+            console.log(error.message)
+        }
+    
+    }
+
+    const updateBook = async(req, res)=>{
+        console.log("update book route fires")
+        try {
+            const bookfile = req.files['book']?.[0].originalname || '';
+            const coverImage = req.files['coverImage']?.[0].originalname || '';
+            const updatedBook = await bookModel.findByIdAndUpdate(req.params.id,
+                                                            {
+                                                            ...req.body,
+                                                            book:bookfile,
+                                                            coverImage:coverImage
+                                                            })
+                res.status(200).json({message:"book updated successfully." })
+        } catch (error) {
+            res.status(500).json({
+                error:error.message
+            })
+            console.log(error)
+        }
+    }
+
+    const deleteBook = async(req,res)=>{
+        const bookId = req.params.id
+        console.log("delete book route fired")
+        try {
+            if(!bookId){
+                res.status(404).json({
+                    error:"book not found."
+                })
+                return
+            }
+            await bookModel.findByIdAndDelete(bookId)
+            res.status(204).json({
+                message:"successfully deleted the book"
+            })
+        } catch (error) {
+            res.status(500).json({
+                error:error.message
             })
         }
-        else{
-            const book = await bookModel.findOne({_id:bookId})
-            if(book){
-                console.log("total book: ",book.total_copies)
-                console.log("available book: ",book.available_copies)
+    }
 
-                //if available book less than total book
-                const upRtn = await loanModel.findOne({userId, bookId, returned:false})
-                let returnAt = new Date();
-                console.log("📆 Due Date:", upRtn.dueDate);
-                console.log("📆 Return Date:", returnAt);
-                
-                    
-                    
-                    let fee;
-                    if(returnAt > upRtn.dueDate){
-                        fee = calculateFine(upRtn.dueDate, returnAt)
-                        const user = await userModel.findOne({_id:userId})
-                        upRtn.fine = fee
-                        await upRtn.save();
-                        await createFinePayment(userId, upRtn._id, fee);
-                        
-                    }
-                    upRtn.returned = true
-                    upRtn.returnDate = returnAt
-                    if(book.available_copies < book.total_copies){
-                        book.available_copies++
-                    }
-                    await upRtn.save()
-                    await book.save();
-                        res.status(200).json({
-                            message:"returned successfully.",
-                            fee: fee > 0 ? fee : null
-                        })
-
-               
+    const loanBook = async (req, res) => {
+        console.log("loan book route fires");
+        const userId = req.body.userId;
+        const bookId = req.params.id;
+      
+        try {
+          const loans = await loanModel.find({ userId });
+          const hasUnpaidFines = loans.some(loan => loan.fine !== null && loan.fine > 0 && !loan.paid);
+          const hasUnreturnedBooks = loans.some(loan => !loan.returned);
+      
+          if (hasUnpaidFines) {
+            return res.status(403).json({
+              message: "You have unpaid fines. Please complete your payment before borrowing new books."
+            });
+          }
+      
+          if (hasUnreturnedBooks) {
+            return res.status(403).json({
+              message: "You must return your current loaned books before borrowing a new one."
+            });
+          }
+      
+          const book = await bookModel.findById(bookId);
+          const reservations = await reservationModel.find();
+      
+          if (!book) {
+            res.status(404).json({
+              message: "book not found."
+            });
+            return;
+          }
+      
+          if (book.available_copies > 0 && book.status == "available") {
+            let loan = new loanModel({
+              bookId: bookId,
+              issueDate: new Date(),
+              dueDate: new Date(new Date().setDate(new Date().getDate() - 8)) 
+            });
+            loan.userId.push(userId);
+            const loaned = await loan.save();
+            res.status(200).json({
+              success: true,
+              loaned
+            });
+      
+            if (loaned) {
+              book.available_copies--;
+              await book.save();
+      
+              const user = await userModel.findById(userId);
+              const dueDate = new Date(loaned.dueDate).toLocaleDateString();
+      
+              await sendNotification({
+                userId,
+                title: "📚 Book Loaned Successfully",
+                message: `You have borrowed "${book.title}". Please return it by ${dueDate}.`,
+                type: "reminder",
+                email: user.email
+              });
             }
+          } else {
+            res.status(404).json({
+              message: "book is not available in our catalog. we will inform you when book is available."
+            });
+          }
+      
+          // 🧹 Removed reservation + prevLoan redundancy
+          // If you still want reservation logic, move it outside this condition and make it smartly check book availability
+      
+        } catch (error) {
+          res.status(500).json({
+            error
+          });
+          console.log(error);
         }
+      };
+      
 
- } catch (error) {
-    res.status(500).json({
-        error:error.message
-    })
- }
-}
+      const returnBook = async (req, res) => {
+        try {
+          const { userId, bookId } = req.body;
+      
+          const upRtn = await loanModel.findOne({
+            userId: { $in: [userId] },
+            bookId,
+            $or: [{ returned: false }, { returned: { $exists: false } }]
+          });
+          
+
+
+          
+          console.log("📨 Request Body:", req.body);
+          console.log("🔍 Looking for loan with userId:", userId, "and bookId:", bookId);
+
+      
+          if (!upRtn) {
+            console.log("there is no loan");
+            return res.status(400).json({ message: "You are not loaned any book" });
+          }
+      
+          const book = await bookModel.findOne({ _id: bookId });
+      
+          if (!book) {
+            return res.status(404).json({ message: "Book not found." });
+          }
+          const { 
+              getAllbooks,
+              getBookById,
+              uploadBook,
+              updateBook, 
+              deleteBook ,
+              loanBook,
+              reserveBook,
+              returnBook,
+              getHardCopyBooks
+          } = require("../controller/bookController")
+          const { upload } = require('../uploads/fileUploads');
+          
+          
+          const bookRouter = require("express").Router()
+          
+          
+          bookRouter.post("/book/order/:id", loanBook)
+          bookRouter.get('/books/hardCopy', getHardCopyBooks)
+          bookRouter.get("/books", getAllbooks)
+          bookRouter.get("/book/:id",checkUser, getBookById)
+          
+          bookRouter.post("/book", upload.fields([
+              { name: 'book', maxCount: 1 },
+              { name: 'coverImage', maxCount: 1 },
+            ]), uploadBook)
+          
+          bookRouter.patch("/book/:id",
+              upload.fields([
+                  { name: 'book', maxCount: 1 },
+                  { name: 'coverImage', maxCount: 1 },
+                ])
+              ,updateBook)
+          bookRouter.delete("/book/delete/:id",deleteBook)
+          bookRouter.post("/book/return", returnBook)
+          module.exports = { bookRouter }
+      
+          console.log("total book: ", book.total_copies);
+          console.log("available book: ", book.available_copies);
+      
+          const user = await userModel.findOne({ _id: userId });
+      
+          let returnAt = new Date();
+          let fee;
+          let daysLate;
+          let checkoutUrl = null;
+      
+          console.log("📆 Due Date:", upRtn.dueDate);
+          console.log("📆 Return Date:", returnAt);
+      
+          if (returnAt > upRtn.dueDate) {
+            fee = calculateFine(upRtn.dueDate, returnAt);
+            daysLate = Math.floor((returnAt - upRtn.dueDate) / (1000 * 60 * 60 * 24));
+            upRtn.fine = fee;
+            await upRtn.save();
+      
+            const payment = await PaymentService.createFinePayment(userId, upRtn._id, fee);
+
+              if (payment && payment.checkoutUrl) {
+             checkoutUrl = payment.checkoutUrl;
+             } else {
+             console.warn("❗️No checkout URL returned from createFinePayment");
+              }
+
+          }
+      
+          upRtn.returned = true;
+          upRtn.returnDate = returnAt;
+      
+          if (book.available_copies < book.total_copies) {
+            book.available_copies++;
+          }
+      
+          await upRtn.save();
+          await book.save();
+      
+          // 📣 SEND NOTIFICATION
+          const notificationData = {
+            userId,
+            title: fee > 0
+              ? "📚 Book Returned Late"
+              : "✅ Book Returned",
+            message: fee > 0
+              ? `You returned "${book.title}" ${daysLate} days late. You owe ${fee.toFixed(2)} birr. You cannot borrow books until payment is made.`
+              : `You have returned "${book.title}". Thank you!`,
+            type: fee > 0 ? "fine" : "info",
+            email: user.email,
+          };
+      
+          if (checkoutUrl) {
+            notificationData.actionUrl = checkoutUrl;
+          }
+      
+          await sendNotification(notificationData);
+      
+          return res.status(200).json({
+            message: "Returned successfully.",
+            fee: fee > 0 ? fee : null,
+            checkoutUrl
+          });
+      
+        } catch (error) {
+          console.error(error);
+          return res.status(500).json({ error: error.message });
+        }
+      };
+      
 
 
 
-
-const reserveBook = async(req,res)=>{}
-
-
-
-module.exports = {
-    getAllbooks,
-    getBookById,
-    uploadBook,
-    updateBook,
-    deleteBook,
-    loanBook,
-    returnBook,
-    getHardCopyBooks
-}
+    module.exports = {
+        getAllbooks,
+        getBookById,
+        uploadBook,
+        updateBook,
+        deleteBook,
+        loanBook,
+        returnBook,
+        getHardCopyBooks
+        
+        
+    }

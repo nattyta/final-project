@@ -5,13 +5,17 @@ const loanSchema = new mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:"user"
     }],
+    bookId: {  
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "book"
+      },
     copyId:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"bookCopy"
     },
     issueDate:{
         type:Date,
-        default:Date.now
+        default:Date.now 
     },
     dueDate:{
         type:Date
@@ -21,7 +25,7 @@ const loanSchema = new mongoose.Schema({
     },
     fine:{
         type:Number,
-        required: true
+        default: null
     },
 
     paid: {
