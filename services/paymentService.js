@@ -2,6 +2,7 @@ const axios = require('axios');
 const Payment = require('../model/paymentModel');
 const { loanModel } = require('../model/loanModel');
 const { userModel } = require("../model/userModel");
+const { sendNotification } = require("../utils/sendNotification");
 
 class PaymentService {
   // 🔁 Handles the payment init logic and delegates to startPayment
@@ -160,32 +161,50 @@ class PaymentService {
   
   
 
-  // ✅ Verifies payment status
   static async verifyPayment(req, res) {
     try {
       const payment = await Payment.findOne({ paymentId: req.params.paymentId });
-
+  
       if (!payment) {
         return res.status(404).json({
           success: false,
           message: "Payment not found"
         });
       }
-
+  
       if (payment.status === 'completed') {
+        // ✅ Fetch user
+        const user = await userModel.findById(payment.userId);
+        if (!user) {
+          return res.status(404).json({
+            success: false,
+            message: "User not found for this payment"
+          });
+        }
+  
+        // 📣 Send notification
+        await sendNotification({
+          userId: user._id,
+          title: "✅ Payment Successful",
+          message: `Your payment of ${payment.amount} birr using ${payment.paymentMethod} has been verified successfully.`,
+          type: "info",
+          email: user.email
+        });
+  
         return res.json({
           success: true,
           message: 'Payment verified successfully'
         });
       }
-
+  
       res.json({
         success: false,
         message: 'Payment verification failed or pending'
       });
+  
     } catch (error) {
       console.error('❌ verifyPayment Error:', error);
-
+  
       res.status(400).json({
         success: false,
         message: typeof error.message === 'string'
@@ -194,6 +213,8 @@ class PaymentService {
       });
     }
   }
+
+  
   static async createFinePayment(userId, loanId, amount) {
     try {
       const user = await userModel.findById(userId);

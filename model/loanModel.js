@@ -31,7 +31,24 @@ const loanSchema = new mongoose.Schema({
     paid: {
         type: Boolean,
         default: false
-    }
+    },
+
+    verificationCode: {
+        type: String,
+        required: function () {
+          return this.isNew; 
+        }
+      },
+      verificationStatus: {
+        type: Boolean,
+        default: false
+      },
+
+      reminderSent: {
+        type: Boolean,
+        default: false
+      }
+      
 
 },{timeseries:true})
 

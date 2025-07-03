@@ -179,9 +179,9 @@
           let loan = new loanModel({
             bookId: bookId,
             issueDate: new Date(),
-            dueDate: new Date(new Date().setDate(new Date().getDate() + 7)), // 7 days from now
-            verificationCode, // ⬅️ save the code
-            userId: [userId]   // push userId into array
+            dueDate: new Date(new Date().setDate(new Date().getDate() + 7)), 
+            verificationCode, 
+            userId: [userId]  
           });
     
           const loaned = await loan.save();
